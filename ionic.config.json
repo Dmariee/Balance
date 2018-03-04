@@ -1,0 +1,8 @@
+{
+  "name": "Balance_Application",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
