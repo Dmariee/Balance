@@ -15,9 +15,15 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TaskPage {
 
+  date: string;
+  type: 'string';
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
+  onChange($event) {
+  	console.log($event);
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad TaskPage');
   }
