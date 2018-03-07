@@ -8,8 +8,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'friend.html',
 })
 export class FriendPage {
-	
-	 constructor() {
+  
+  items: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.initializeItems();
   }
 
@@ -48,18 +50,18 @@ export class FriendPage {
       'San Francisco',
       'Seoul',
       'Taipeh',
-      'Tel Aviv',
+      'Tel Aiv',
       'Tokio',
       'Uelzen',
       'Washington'
     ];
   }
 
-	  itemSelected(item: string) {
-	    console.log("Selected Item", item);
-	  }
+	itemSelected(item: string) {
+	  console.log("Selected Item", item);
+	}
 	
-	 getItems(ev) {
+	getItems(ev) {
     // Reset items back to all of the items
     this.initializeItems();
 
@@ -73,10 +75,6 @@ export class FriendPage {
       })
     }
   }
-  
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FriendPage');
