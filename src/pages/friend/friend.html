@@ -10,9 +10,16 @@
     <ion-title>Friends</ion-title>
   </ion-navbar>
 
+  <ion-toolbar>
+  	<ion-searchbar
+  (ionInput)="getItems($event)">
+    </ion-searchbar>
+  </ion-toolbar>
+
 </ion-header>
 
 
+<<<<<<< HEAD
 <ion-content padding>
 <ion-list>
   <ion-item>
@@ -23,5 +30,13 @@
     <p>Ugh. As if.</p>
   </ion-item>
 </ion-list>
+=======
+>>>>>>> master
 
+<ion-content>
+  <ion-list>
+    <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
+      {{ item }}
+    </button>
+  </ion-list>
 </ion-content>
