@@ -5,12 +5,17 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>Explore</ion-title>
+    <ion-title>
+      Map
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="addMarker()"><ion-icon name="add"></ion-icon>Add Marker</button>
+    </ion-buttons> 
   </ion-navbar>
-
 </ion-header>
+ 
+<ion-content>
+  <div #map id="map"></div> 
+</ion-content>
 
-
-<img src="../assets/imgs/static_map.png" height="100%" width="100%">

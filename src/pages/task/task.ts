@@ -19,7 +19,7 @@ export class TaskPage {
     viewTitle;
     isToday: boolean;
     calendar = {
-        mode: 'week',
+        mode: 'month',
         currentDate: new Date()
     };
 
