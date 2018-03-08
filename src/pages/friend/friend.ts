@@ -29,24 +29,6 @@ export class FriendPage {
       'Hanoi',
       'Hong Kong',
       'Islamabad',
-      'Istanbul',
-      'Jakarta',
-      'Kiel',
-      'Kyoto',
-      'Le Havre',
-      'Lebanon',
-      'Lhasa',
-      'Lima',
-      'London',
-      'Los Angeles',
-      'Madrid',
-      'Manila',
-      'New York',
-      'Olympia',
-      'Oslo',
-      'Panama City',
-      'Peking',
-      'Philadelphia',
       'San Francisco',
       'Seoul',
       'Taipeh',
@@ -59,6 +41,7 @@ export class FriendPage {
 
 	itemSelected(item: string) {
 	  console.log("Selected Item", item);
+    alert("You do not have permission to view item " + item + "'s schedule.");
 	}
 	
 	getItems(ev) {
