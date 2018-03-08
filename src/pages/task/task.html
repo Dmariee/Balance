@@ -5,8 +5,26 @@
   Ionic pages and navigation.
 -->
 
-<ion-calendar [(ngModel)]="date"
-              (onChange)="onChange($event)"
-              [type]="type"
-              [format]="'YYYY-MM-DD'">
-</ion-calendar>
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>{{viewTitle}}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="changeMode('week')">Week</button>
+            <button ion-button (click)="changeMode('month')">Month</button>
+            <button ion-button icon-only (click)="addEvent()">
+            	<ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="has-header">
+    <calendar [eventSource]="eventSource"
+              [calendarMode]="calendar.mode"
+              [currentDate]="calendar.currentDate"
+              (onCurrentDateChanged)="onCurrentDateChanged($event)"
+              (onEventSelected)="onEventSelected($event)"
+              (onTitleChanged)="onViewTitleChanged($event)"
+              step="30">
+    </calendar>
+</ion-content>
