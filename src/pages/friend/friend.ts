@@ -33,7 +33,7 @@ export class FriendPage {
       'Wade',
       'Lebron',
       'Kobe',
-      'Vanessa',git 
+      'Vanessa', 
       'Emile',
       'Grace',
       'Tyrone',
