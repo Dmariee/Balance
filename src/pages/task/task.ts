@@ -24,7 +24,6 @@ export class TaskPage {
 
   onChange($event) {
   	console.log($event);
-    console.log(this.myPracticeDate);
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad TaskPage');
