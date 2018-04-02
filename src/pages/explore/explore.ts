@@ -23,7 +23,7 @@ export class ExplorePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation) {
   }
 
-    loadMap(){
+  loadMap(){
  		
  		this.geolocation.getCurrentPosition().then((position) => {
 
@@ -34,7 +34,8 @@ export class ExplorePage {
       			zoom: 15,
       			mapTypeId: google.maps.MapTypeId.ROADMAP
     		}
- 
+      console.log(position.coords.latitude);
+      console.log(position.coords.longitude);
     	this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
   	},(err) => {
       console.log(err);
