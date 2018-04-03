@@ -17,6 +17,7 @@ import { EventsPage } from '../events/events';
 export class TaskPage {
     months = ["JANUARY ","FEBRUARY ","MARCH ","APRIL ","MAY ","JUNE ","JULY ","AUGUST ","SEPTEMBER ","OCTOBER ","NOVEMBER ","DECEMBER "];
     eventSource: any = [];
+    eventHolder: any = [];
     viewTitle;
     isToday: boolean;
     calendar = {
@@ -25,7 +26,15 @@ export class TaskPage {
     };
 
     addEvent() {
-        this.navCtrl.push(EventsPage, {eventSource: this.eventSource});
+        this.navCtrl.push(EventsPage, {
+            "eventHolder": this.eventHolder,
+            "parentPage": this
+        });
+    }
+
+    updateCalendar(data) {
+        this.eventSource = data;
+        console.log(this.eventSource);
     }
 /*
     addEven() {

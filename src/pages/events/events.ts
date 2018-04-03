@@ -14,23 +14,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class EventsPage {
   event = { title: "", location: "", startTime: "", endTime: "" };
-  eventSource: any = [];
+  eventHolder: any = [];
 
   saveEvent() {
   	var startTime = new Date(this.event.startTime);
   	var endTime = new Date(this.event.endTime);
-  	this.eventSource.push({
+  	this.eventHolder.push({
   		title: this.event.title,
   		location: this.event.location,
   		startTime: startTime,
   		endTime: endTime
   	});
-    console.log(this.eventSource);
-  	this.navCtrl.pop();
+    this.navParams.get("parentPage").updateCalendar(this.eventHolder);
+    this.navCtrl.pop();
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-  	this.eventSource = navParams.get("eventSource");
+  	this.eventHolder = navParams.get("eventHolder");
   }
 
   ionViewDidLoad() {
