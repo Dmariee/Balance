@@ -16,7 +16,6 @@ import { EventsPage } from '../events/events';
 })
 export class TaskPage {
     months = ["JANUARY ","FEBRUARY ","MARCH ","APRIL ","MAY ","JUNE ","JULY ","AUGUST ","SEPTEMBER ","OCTOBER ","NOVEMBER ","DECEMBER "];
-    eventHolder: any = [];
     eventSource: any = [];
     viewTitle;
     isToday: boolean;
@@ -26,16 +25,11 @@ export class TaskPage {
     };
 
     addEvent() {
-        this.navCtrl.push(EventsPage, {eventHolder: this.eventHolder});
+        this.navCtrl.push(EventsPage, {eventSource: this.eventSource});
     }
-
-    checkStuff() {
-        this.eventSource = this.eventHolder;
+/*
+    addEven() {
         console.log(this.eventSource);
-        console.log(this.eventHolder);
-    }
-
-    addSingleEvent() {
         var date = new Date();
         var startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2, 0, date.getMinutes() + 12);
         var endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2, 0, date.getMinutes() + 19);;
@@ -45,10 +39,21 @@ export class TaskPage {
             startTime: startTime,
             endTime: endTime
         });
+        this.eventHolder.push({
+            title: "lovely",
+            location: "pizza",
+            startTime: startTime,
+            endTime: endTime
+        });
+        this.eventHolder.push({
+            title: "loveliesy",
+            location: "pizza",
+            startTime: startTime,
+            endTime: endTime
+        });
         this.eventSource = this.eventHolder;
-        console.log(this.eventSource);
         console.log(this.eventHolder);
-    }
+    }*/
 
     today() {
         this.calendar.currentDate = new Date();

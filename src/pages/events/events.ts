@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
 /**
  * Generated class for the EventsPage page.
  *
@@ -15,24 +14,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class EventsPage {
   event = { title: "", location: "", startTime: "", endTime: "" };
-  eventHolder: any = [];
+  eventSource: any = [];
 
   saveEvent() {
-  	var startTime = new Date(this.event.startTime); 
-  	var startTimeFormatted = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), startTime.getHours(), startTime.getMinutes());
+  	var startTime = new Date(this.event.startTime);
   	var endTime = new Date(this.event.endTime);
-  	var endTimeFormatted = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), startTime.getHours(), endTime.getMinutes());
-  	this.eventHolder.push({
+  	this.eventSource.push({
   		title: this.event.title,
   		location: this.event.location,
-  		startTime: startTimeFormatted,
-  		endTime: endTimeFormatted
+  		startTime: startTime,
+  		endTime: endTime
   	});
+    console.log(this.eventSource);
   	this.navCtrl.pop();
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-  	this.eventHolder = navParams.get("eventHolder");
+  	this.eventSource = navParams.get("eventSource");
   }
 
   ionViewDidLoad() {

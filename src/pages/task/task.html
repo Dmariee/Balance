@@ -23,13 +23,6 @@
 
 <ion-content class="has-header">  
 
-<button ion-button icon-only (click)="checkStuff()">
-    <ion-icon name="add"></ion-icon>
-  </button>
-  <button ion-button icon-only (click)="addSingleEvent()">
-    <ion-icon name="add"></ion-icon>
-  </button>
-
     <calendar [eventSource]="eventSource"
               [calendarMode]="calendar.mode"
               [currentDate]="calendar.currentDate"
