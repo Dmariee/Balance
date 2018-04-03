@@ -13,7 +13,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'events.html',
 })
 export class EventsPage {
-  event = { title: "", location: "", startTime: "", endTime: "" };
+  event = { 
+    title: "",
+    description: "",
+    location: "",
+    startTime: "",
+    endTime: "",
+    priority: "", 
+  };
   eventHolder: any = [];
 
   saveEvent() {
@@ -21,9 +28,11 @@ export class EventsPage {
   	var endTime = new Date(this.event.endTime);
   	this.eventHolder.push({
   		title: this.event.title,
+      description: this.event.description,
   		location: this.event.location,
-  		startTime: startTime,
-  		endTime: endTime
+      startTime: startTime,
+      endTime: endTime,
+      priority: this.event.priority,
   	});
     this.navParams.get("parentPage").updateCalendar(this.eventHolder);
     this.navCtrl.pop();

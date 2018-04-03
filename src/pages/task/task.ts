@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EventsPage } from '../events/events';
+import { TemplatePage } from '../template/template';
 
 /**
  * Generated class for the TaskPage page.
@@ -22,30 +23,36 @@ export class TaskPage {
     isToday: boolean;
     calendar = {
         mode: 'month',
-        currentDate: new Date()
+        currentDate: new Date(),
     };
 
     addEvent() {
         this.eventSource = [];
         this.navCtrl.push(EventsPage, {
             "eventHolder": this.eventHolder,
-            "parentPage": this
+            "parentPage": this,
         });
     }
 
-    updateCalendar(data) {
-        this.eventSource = data;
-        console.log(this.eventSource);
+    onCurrentDateChanged(event: Date) {
+        this.viewTitle = this.months[event.getMonth()] + event.getFullYear();
+    };
+
+    onEventSelected(event) {
+        this.navCtrl.push(TemplatePage, {
+            "event": event,
+        });
     }
 
     today() {
         this.calendar.currentDate = new Date();
     }
 
-    onCurrentDateChanged = (ev: Date) => {
-        this.viewTitle = this.months[ev.getMonth()] + ev.getFullYear();
-    };
-
+    updateCalendar(data) {
+        this.eventSource = data;
+        console.log(this.eventSource);
+    }
+ 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
     }
 

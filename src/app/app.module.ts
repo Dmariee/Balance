@@ -12,6 +12,7 @@ import { TaskPage } from '../pages/task/task';
 import { FriendPage } from '../pages/friend/friend';
 import { ExplorePage } from '../pages/explore/explore';
 import { EventsPage } from '../pages/events/events';
+import { TemplatePage } from '../pages/template/template';
 
 @NgModule({
   declarations: [
@@ -20,12 +21,13 @@ import { EventsPage } from '../pages/events/events';
     TaskPage,
     FriendPage,
     ExplorePage,
-    EventsPage
+    EventsPage,
+    TemplatePage,
   ],
   imports: [
     BrowserModule,
     NgCalendarModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -34,7 +36,8 @@ import { EventsPage } from '../pages/events/events';
     TaskPage,
     FriendPage,
     ExplorePage,
-    EventsPage
+    EventsPage,
+    TemplatePage,
   ],
   providers: [
     StatusBar,
