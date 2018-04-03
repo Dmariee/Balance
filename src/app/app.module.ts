@@ -13,6 +13,7 @@ import { FriendPage } from '../pages/friend/friend';
 import { ExplorePage } from '../pages/explore/explore';
 import { EventsPage } from '../pages/events/events';
 import { TemplatePage } from '../pages/template/template';
+import { AssistantPage } from '../pages/assistant/assistant';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TemplatePage } from '../pages/template/template';
     ExplorePage,
     EventsPage,
     TemplatePage,
+    AssistantPage,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +40,7 @@ import { TemplatePage } from '../pages/template/template';
     ExplorePage,
     EventsPage,
     TemplatePage,
+    AssistantPage,
   ],
   providers: [
     StatusBar,

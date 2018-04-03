@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EventsPage } from '../events/events';
 import { TemplatePage } from '../template/template';
+import { AssistantPage } from '../assistant/assistant';
 
 /**
  * Generated class for the TaskPage page.
@@ -32,6 +33,10 @@ export class TaskPage {
             "eventHolder": this.eventHolder,
             "parentPage": this,
         });
+    }
+
+    callAssistant() {
+        this.navCtrl.push(AssistantPage);
     }
 
     onCurrentDateChanged(event: Date) {
