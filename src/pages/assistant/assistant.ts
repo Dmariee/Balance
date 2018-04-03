@@ -14,6 +14,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'assistant.html',
 })
 export class AssistantPage {
+  userChoice : String;
+
+  getUserChoice(decision) {
+  	this.userChoice = decision;
+  	console.log(decision);
+  }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }

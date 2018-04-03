@@ -12,7 +12,10 @@
 
 </ion-header>
 
-
 <ion-content padding>
-
+	<p> How may I help you? </p>
+	<ion-select #C (ionChange)="getUserChoice(C.value)">
+		<ion-option value="0" >Plan an event</ion-option>
+		<ion-option value="1">Look for event</ion-option>>
+	</ion-select>
 </ion-content>
