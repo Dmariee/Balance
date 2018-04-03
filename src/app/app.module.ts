@@ -11,6 +11,7 @@ import { HomePage } from '../pages/home/home';
 import { TaskPage } from '../pages/task/task';
 import { FriendPage } from '../pages/friend/friend';
 import { ExplorePage } from '../pages/explore/explore';
+import { EventsPage } from '../pages/events/events';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ExplorePage } from '../pages/explore/explore';
     HomePage,
     TaskPage,
     FriendPage,
-    ExplorePage
+    ExplorePage,
+    EventsPage
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,8 @@ import { ExplorePage } from '../pages/explore/explore';
     HomePage,
     TaskPage,
     FriendPage,
-    ExplorePage
+    ExplorePage,
+    EventsPage
   ],
   providers: [
     StatusBar,

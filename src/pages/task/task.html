@@ -3,6 +3,11 @@
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
+
+<button ion-button icon-only (click)="addSingleEvent()">
+    <ion-icon name="add"></ion-icon>
+  </button>
+
 -->
 
 <ion-header>
@@ -16,7 +21,15 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="has-header">
+<ion-content class="has-header">  
+
+<button ion-button icon-only (click)="checkStuff()">
+    <ion-icon name="add"></ion-icon>
+  </button>
+  <button ion-button icon-only (click)="addSingleEvent()">
+    <ion-icon name="add"></ion-icon>
+  </button>
+
     <calendar [eventSource]="eventSource"
               [calendarMode]="calendar.mode"
               [currentDate]="calendar.currentDate"

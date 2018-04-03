@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { EventsPage } from '../events/events';
 
 /**
  * Generated class for the TaskPage page.
@@ -15,7 +16,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TaskPage {
     months = ["JANUARY ","FEBRUARY ","MARCH ","APRIL ","MAY ","JUNE ","JULY ","AUGUST ","SEPTEMBER ","OCTOBER ","NOVEMBER ","DECEMBER "];
-    eventsHolder: any = [];
+    eventHolder: any = [];
     eventSource: any = [];
     viewTitle;
     isToday: boolean;
@@ -25,17 +26,28 @@ export class TaskPage {
     };
 
     addEvent() {
+        this.navCtrl.push(EventsPage, {eventHolder: this.eventHolder});
+    }
+
+    checkStuff() {
+        this.eventSource = this.eventHolder;
+        console.log(this.eventSource);
+        console.log(this.eventHolder);
+    }
+
+    addSingleEvent() {
         var date = new Date();
         var startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2, 0, date.getMinutes() + 12);
-        var endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2, 0, date.getMinutes() + 19);
-        this.eventsHolder.push(
-        {
-            title: "Tester",
-            startTime:  startTime,
-            endTime:  endTime,
-            allDay: false
+        var endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2, 0, date.getMinutes() + 19);;
+        this.eventHolder.push({
+            title: "love",
+            location: "pizza",
+            startTime: startTime,
+            endTime: endTime
         });
-        this.eventSource = this.eventsHolder;
+        this.eventSource = this.eventHolder;
+        console.log(this.eventSource);
+        console.log(this.eventHolder);
     }
 
     today() {
@@ -46,11 +58,10 @@ export class TaskPage {
         this.viewTitle = this.months[ev.getMonth()] + ev.getFullYear();
     };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TaskPage');
-  }
-
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad TaskPage');
+    }
 }
