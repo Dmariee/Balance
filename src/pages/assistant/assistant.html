@@ -13,9 +13,28 @@
 </ion-header>
 
 <ion-content padding>
-	<p> How may I help you? </p>
-	<ion-select #C (ionChange)="getUserChoice(C.value)">
-		<ion-option value="0" >Plan an event</ion-option>
-		<ion-option value="1">Look for event</ion-option>>
-	</ion-select>
+	<div>
+		<p> OKOKOK </p>
+	</div>
+	<div *ngIf="displaySection == 0">
+		<p> How may I help you? </p>
+		<ion-select #C (ionChange)="getUserChoice(C.value)">
+			<ion-option value="0" >Plan an event</ion-option>
+			<ion-option value="1">Look for event</ion-option>>
+		</ion-select>
+	</div>
+	<div *ngIf="displaySection == 1">
+		<p> Reflect </p>
+		<ion-select #C (ionChange)="getUserChoice(C.value)">
+			<ion-option value="0" >Never look back</ion-option>
+			<ion-option value="1">Tracking</ion-option>>
+		</ion-select>
+	</div>
+	<div *ngIf="displaySection == 2">
+		<p> Direction </p>
+		<ion-select #C (ionChange)="getUserChoice(C.value)">
+			<ion-option value="0" >Guess who</ion-option>
+			<ion-option value="1">No</ion-option>>
+		</ion-select>
+	</div>
 </ion-content>
