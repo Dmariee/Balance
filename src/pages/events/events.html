@@ -6,8 +6,13 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Add Event</ion-title>
+  <ion-navbar hideBackButton color="primary">
+    <ion-buttons left>
+        <button ion-button (click)="goBack()">
+            <ion-icon name="arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-title>Adding Event</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -29,14 +34,14 @@
       </ion-item>
       <ion-item>
         <ion-label floating>Start Date</ion-label>
-        <ion-datetime displayFormat="MMMM DD YYYY HH:mm a" pickerFormat="MMM DD YY hh mm a" [(ngModel)]="event.startTime" name="event.startDate"></ion-datetime>
+        <ion-datetime displayFormat="MMMM DD YYYY HH:mm" pickerFormat="MMM DD YY hh mm a" [(ngModel)]="event.startTime" name="event.startDate"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label floating>End Date</ion-label>
-        <ion-datetime displayFormat="MMMM DD YYYY HH:mm a" pickerFormat="MMM DD YY hh mm a" [(ngModel)]="event.endTime" name="event.endDate"></ion-datetime>
+        <ion-datetime displayFormat="MMMM DD YYYY HH:mm" pickerFormat="MMM DD YY hh mm a" [(ngModel)]="event.endTime" name="event.endDate"></ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label floating>Priority</ion-label>
+        <ion-label inline>Priority</ion-label>
         <ion-input type="number" [(ngModel)]="event.priority" name="event.priority"></ion-input>
       </ion-item>
       <ion-item>

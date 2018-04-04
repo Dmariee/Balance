@@ -23,6 +23,11 @@ export class EventsPage {
   };
   eventHolder: any = [];
 
+  goBack() {
+    this.navParams.get("parentPage").updateCalendar(this.eventHolder);
+    this.navCtrl.pop();
+  }
+
   saveEvent() {
   	var startTime = new Date(this.event.startTime);
   	var endTime = new Date(this.event.endTime);

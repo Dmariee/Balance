@@ -18,7 +18,7 @@ import { AssistantPage } from '../assistant/assistant';
 })
 export class TaskPage {
     months = ["JANUARY ","FEBRUARY ","MARCH ","APRIL ","MAY ","JUNE ","JULY ","AUGUST ","SEPTEMBER ","OCTOBER ","NOVEMBER ","DECEMBER "];
-    eventSource;
+    eventSource: any = [];
     eventHolder: any = [];
     viewTitle;
     isToday: boolean;
@@ -41,6 +41,7 @@ export class TaskPage {
 
     onCurrentDateChanged(event: Date) {
         this.viewTitle = this.months[event.getMonth()] + event.getFullYear();
+        console.log(event);
     };
 
     onEventSelected(event) {
@@ -55,7 +56,6 @@ export class TaskPage {
 
     updateCalendar(data) {
         this.eventSource = data;
-        console.log(this.eventSource);
     }
  
     constructor(public navCtrl: NavController, public navParams: NavParams) {
