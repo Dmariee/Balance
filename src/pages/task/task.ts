@@ -18,6 +18,7 @@ import { AssistantPage } from '../assistant/assistant';
 })
 export class TaskPage {
     months = ["JANUARY ","FEBRUARY ","MARCH ","APRIL ","MAY ","JUNE ","JULY ","AUGUST ","SEPTEMBER ","OCTOBER ","NOVEMBER ","DECEMBER "];
+    availableTimes = {};
     eventSource: any = [];
     eventHolder: any = [];
     viewTitle;
@@ -31,6 +32,7 @@ export class TaskPage {
         this.eventSource = [];
         this.navCtrl.push(EventsPage, {
             "eventHolder": this.eventHolder,
+            "availableTimes": this.availableTimes,
             "parentPage": this,
         });
     }
@@ -47,10 +49,6 @@ export class TaskPage {
         this.navCtrl.push(TemplatePage, {
             "event": event,
         });
-    }
-
-    onTimeSelected(ev) {
-        console.log(ev);
     }
 
     today() {

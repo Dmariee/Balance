@@ -22,6 +22,7 @@ export class EventsPage {
     priority: "", 
   };
   eventHolder: any = [];
+  availableTimes = {};
 
   goBack() {
     this.navParams.get("parentPage").updateCalendar(this.eventHolder);
@@ -31,7 +32,10 @@ export class EventsPage {
   saveEvent() {
   	var startTime = new Date(this.event.startTime);
   	var endTime = new Date(this.event.endTime);
-  	this.eventHolder.push({
+    var inputDate = (startTime.getMonth() + 1) + "/" + startTime.getDate() + "/" + startTime.getFullYear();
+    var inputFiller = startTime.getHours() + ":" + startTime.getMinutes() + "-" + endTime.getHours() + ":" + endTime.getMinutes();
+    var inputHolder = new Array();
+    this.eventHolder.push({
   		title: this.event.title,
       description: this.event.description,
   		location: this.event.location,
@@ -40,11 +44,24 @@ export class EventsPage {
       priority: this.event.priority,
   	});
     this.navParams.get("parentPage").updateCalendar(this.eventHolder);
+    if (!(inputDate in this.availableTimes)) {
+      inputHolder.push(inputFiller);
+      this.availableTimes[inputDate] = inputHolder;
+    }
+    else {
+      inputHolder = this.availableTimes[inputDate];
+      inputHolder.push(inputFiller);
+      inputHolder.sort();
+      this.availableTimes[inputDate] = inputHolder;
+    }
+
+    console.log(this.availableTimes[inputDate]);
     this.navCtrl.pop();
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   	this.eventHolder = navParams.get("eventHolder");
+    this.availableTimes = navParams.get("availableTimes");
   }
 
   ionViewDidLoad() {
