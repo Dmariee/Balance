@@ -41,13 +41,16 @@ export class TaskPage {
 
     onCurrentDateChanged(event: Date) {
         this.viewTitle = this.months[event.getMonth()] + event.getFullYear();
-        console.log(event);
     };
 
     onEventSelected(event) {
         this.navCtrl.push(TemplatePage, {
             "event": event,
         });
+    }
+
+    onTimeSelected(ev) {
+        console.log(ev);
     }
 
     today() {

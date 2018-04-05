@@ -15,23 +15,21 @@
 <ion-content padding>
 	<div *ngIf="displaySection == 'base'">
 		<p> How may I help you? </p>
-		<ion-select #C (ionChange)="getUserChoice(C.value)">
-			<ion-option value="planEvent" >Plan an event</ion-option>
-			<ion-option value="lookupEvent">Look for an event</ion-option>>
-		</ion-select>
+		<ion-item>
+			<ion-select #C (ionChange)="getNextDisplay(C.value)">
+				<ion-option value="planEvent" >Plan an event</ion-option>
+				<ion-option value="lookupEvent">Look for an event</ion-option>>
+			</ion-select>
+		</ion-item>
 	</div>
 	<div *ngIf="displaySection == 'planEvent'">
-		<p> Reflect </p>
-		<ion-select #C (ionChange)="getUserChoice(C.value)">
-			<ion-option value="0" >Never look back</ion-option>
-			<ion-option value="1">Tracking</ion-option>>
-		</ion-select>
+		<p> Select a day </p>
+		<ion-item>
+			<ion-label floating>Start Date</ion-label>
+				<ion-datetime (ionChange)="getNextDisplay('lookupEvent')" pickerFormat="MMM DD YYYY" [(ngModel)]="plannedStart" name="plannedStart" ></ion-datetime>
+		</ion-item>
 	</div>
 	<div *ngIf="displaySection == 'lookupEvent'">
-		<p> Direction </p>
-		<ion-select #C (ionChange)="getUserChoice(C.value)">
-			<ion-option value="0" >Guess who</ion-option>
-			<ion-option value="1">No</ion-option>>
-		</ion-select>
+		<p> Events I found {{plannedStart}} </p>
 	</div>
 </ion-content>

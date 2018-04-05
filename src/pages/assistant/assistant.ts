@@ -15,9 +15,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AssistantPage {
   displaySection = 'base';
+  plannedStart = "";
+  events = "no not at all";
 
-  getUserChoice(userChoice) {
-	this.displaySection = userChoice;
+  getNextDisplay(displaySection) {
+    this.displaySection = displaySection;
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
