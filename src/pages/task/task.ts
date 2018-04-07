@@ -38,7 +38,9 @@ export class TaskPage {
     }
 
     callAssistant() {
-        this.navCtrl.push(AssistantPage);
+        this.navCtrl.push(AssistantPage, {
+            "availableTimes": this.availableTimes,
+        });
     }
 
     onCurrentDateChanged(event: Date) {

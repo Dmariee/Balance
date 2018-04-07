@@ -12,9 +12,10 @@
 
 </ion-header>
 
+
 <ion-content padding>
 	<div *ngIf="displaySection == 'base'">
-		<p> How may I help you? </p>
+		<h1> How may I help you? </h1>
 		<ion-item>
 			<ion-select #C (ionChange)="getNextDisplay(C.value)">
 				<ion-option value="planEvent" >Plan an event</ion-option>
@@ -23,13 +24,13 @@
 		</ion-item>
 	</div>
 	<div *ngIf="displaySection == 'planEvent'">
-		<p> Select a day </p>
+		<h1> Select a day </h1>
 		<ion-item>
 			<ion-label floating>Start Date</ion-label>
 				<ion-datetime (ionChange)="getNextDisplay('lookupEvent')" pickerFormat="MMM DD YYYY" [(ngModel)]="plannedStart" name="plannedStart" ></ion-datetime>
 		</ion-item>
 	</div>
 	<div *ngIf="displaySection == 'lookupEvent'">
-		<p> Events I found {{plannedStart}} </p>
+		<button (click)="show()"></button>
 	</div>
 </ion-content>

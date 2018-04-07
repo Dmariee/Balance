@@ -15,14 +15,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AssistantPage {
   displaySection = 'base';
-  plannedStart = "";
-  events = "no not at all";
+  plannedStart;
+  availableTimes;
 
   getNextDisplay(displaySection) {
     this.displaySection = displaySection;
   }
 
+  show() {
+    var startTime = new Date(this.plannedStart);
+    var inputDate = (startTime.getMonth() + 1) + "/" + startTime.getDate() + "/" + startTime.getFullYear();
+    console.log(this.availableTimes[inputDate]);
+  }
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.availableTimes = navParams.get("availableTimes");
   }
 
   ionViewDidLoad() {
