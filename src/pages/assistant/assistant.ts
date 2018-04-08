@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import * as moment from 'moment';
 
 /**
  * Generated class for the AssistantPage page.
@@ -15,7 +16,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AssistantPage {
   displaySection = 'base';
-  plannedStart;
+  plannedStart = moment().format();
   availableTimes;
 
   getNextDisplay(displaySection) {

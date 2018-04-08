@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import * as moment from 'moment';
 /**
  * Generated class for the EventsPage page.
  *
@@ -17,8 +18,8 @@ export class EventsPage {
     title: "",
     description: "",
     location: "",
-    startTime: "",
-    endTime: "",
+    startTime: moment().format(),
+    endTime: moment().format(),
     priority: "", 
   };
   eventHolder: any = [];
@@ -33,7 +34,7 @@ export class EventsPage {
   	var startTime = new Date(this.event.startTime);
   	var endTime = new Date(this.event.endTime);
     var inputDate = (startTime.getMonth() + 1) + "/" + startTime.getDate() + "/" + startTime.getFullYear();
-    var inputFiller = startTime.getHours() + ":" + startTime.getMinutes() + "-" + endTime.getHours() + ":" + endTime.getMinutes();
+    var inputFiller = startTime.getHours() + ":" + startTime.getMinutes() + " - " + endTime.getHours() + ":" + endTime.getMinutes();
     var inputHolder = new Array();
     this.eventHolder.push({
   		title: this.event.title,
