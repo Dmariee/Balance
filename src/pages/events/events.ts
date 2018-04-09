@@ -33,8 +33,8 @@ export class EventsPage {
   saveEvent() {
   	var startTime = new Date(this.event.startTime);
   	var endTime = new Date(this.event.endTime);
-    var inputDate = (startTime.getMonth() + 1) + "/" + startTime.getDate() + "/" + startTime.getFullYear();
-    var inputFiller = startTime.getHours() + ":" + startTime.getMinutes() + " - " + endTime.getHours() + ":" + endTime.getMinutes();
+    var inputDate = moment(startTime).format("MM/DD/YYYY");
+    var inputFiller = moment(startTime).format("HH:mm") + "-" + moment(endTime).format("HH:mm");
     var inputHolder = new Array();
     this.eventHolder.push({
   		title: this.event.title,

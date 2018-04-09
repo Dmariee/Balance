@@ -25,7 +25,7 @@ export class AssistantPage {
 
   show() {
     var startTime = new Date(this.plannedStart);
-    var inputDate = (startTime.getMonth() + 1) + "/" + startTime.getDate() + "/" + startTime.getFullYear();
+    var inputDate = moment(startTime).format("MM/DD/YYYY");
     console.log(this.availableTimes[inputDate]);
   }
 
