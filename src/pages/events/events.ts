@@ -31,17 +31,15 @@ export class EventsPage {
   }
 
   saveEvent() {
-  	var startTime = new Date(this.event.startTime);
-  	var endTime = new Date(this.event.endTime);
-    var inputDate = moment(startTime).format("MM/DD/YYYY");
-    var inputFiller = moment(startTime).format("HH:mm") + "-" + moment(endTime).format("HH:mm");
+    var inputDate = moment(this.event.startTime).format("MM/DD/YYYY");
+    var inputFiller = this.event.startTime + "split_here" + this.event.endTime;
     var inputHolder = new Array();
     this.eventHolder.push({
   		title: this.event.title,
       description: this.event.description,
   		location: this.event.location,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: new Date(this.event.startTime),
+      endTime: new Date(this.event.endTime),
       priority: this.event.priority,
   	});
     this.navParams.get("parentPage").updateCalendar(this.eventHolder);
