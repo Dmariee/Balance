@@ -24,13 +24,27 @@
 		</ion-item>
 	</div>
 	<div *ngIf="displaySection == 'planEvent'">
-		<h1> Select a day </h1>
-		<ion-item>
-			<ion-label floating>Start Date</ion-label>
-				<ion-datetime (ionChange)="getNextDisplay('lookupEvent')" pickerFormat="MMM DD YYYY" [(ngModel)]="plannedStart" name="plannedStart" ></ion-datetime>
-		</ion-item>
+		<h1> Tell me more </h1>
+		<form (ngSubmit)="show()">
+			<ion-list>
+				<ion-item>
+					<ion-label floating> Range Start </ion-label>
+					<ion-datetime pickerFormat="MMMM DD YYYY hh:mm a" [(ngModel)]="planning.rangeStart" name="planning.rangeStart" ></ion-datetime>
+				</ion-item>
+				<ion-item>
+					<ion-label floating> Range End </ion-label>
+					<ion-datetime pickerFormat="MMMM DD YYYY hh:mm a" [(ngModel)]="planning.rangeEnd" name="planning.rangeEnd" ></ion-datetime>
+				</ion-item>
+				<ion-item>
+					<ion-label floating> Duration </ion-label>
+					<ion-datetime pickerFormat="HH:mm" [(ngModel)]="planning.plannedDuration" name="planning.plannedDuration" ></ion-datetime>
+				</ion-item>
+				<ion-item>
+					<button ion-button type="submit" full round>Save Details</button>
+				</ion-item>
+			</ion-list>
+		</form>
 	</div>
 	<div *ngIf="displaySection == 'lookupEvent'">
-		<button (click)="show()"></button>
 	</div>
 </ion-content>

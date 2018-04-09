@@ -67,4 +67,4 @@ export class TaskPage {
     ionViewDidLoad() {
         console.log('ionViewDidLoad TaskPage');
     }
-}
+}   
