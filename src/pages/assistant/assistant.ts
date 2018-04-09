@@ -40,10 +40,15 @@ export class AssistantPage {
     var inputRangeEnd_DateType = moment(inputRangeEnd_TextType, "MM/DD/YYYY");
     var daysBetween = inputRangeEnd_DateType.diff(inputRangeStart_DateType, 'd');
     var daysBetweenHolder = inputRangeStart_DateType;
+    var allEvents = [];
     for (daysBetween; daysBetween >= 0; daysBetween--) {
-      console.log(daysBetweenHolder.format("MM/DD/YYYY")); // value to look up in dictionary
+      if (this.availableTimes[daysBetweenHolder.format("MM/DD/YYYY")] != undefined) {
+        allEvents = allEvents.concat(this.availableTimes[daysBetweenHolder.format("MM/DD/YYYY")]);
+      }
       daysBetweenHolder = daysBetweenHolder.add(1, 'd');
     }
+    allEvents.sort();
+    console.log(allEvents);
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
