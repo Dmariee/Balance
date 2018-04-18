@@ -29,15 +29,15 @@
 			<ion-list>
 				<ion-item>
 					<ion-label floating> Range Start </ion-label>
-					<ion-datetime pickerFormat="MMM DD YY hh:mm a" [(ngModel)]="planning.rangeStart" name="planning.rangeStart" ></ion-datetime>
+					<ion-datetime pickerFormat="MMM DD YY hh:mm a" [(ngModel)]="planning.lowerBound" name="planning.lowerBound" ></ion-datetime>
 				</ion-item>
 				<ion-item>
 					<ion-label floating> Range End </ion-label>
-					<ion-datetime pickerFormat="MMM DD YY hh:mm a" [(ngModel)]="planning.rangeEnd" name="planning.rangeEnd" ></ion-datetime>
+					<ion-datetime pickerFormat="MMM DD YY hh:mm a" [(ngModel)]="planning.upperBound" name="planning.upperBound" ></ion-datetime>
 				</ion-item>
 				<ion-item>
 					<ion-label floating> Event Duration </ion-label>
-					<ion-datetime pickerFormat="HH:mm" [(ngModel)]="planning.plannedDuration" name="planning.plannedDuration" ></ion-datetime>
+					<ion-datetime pickerFormat="HH:mm" [(ngModel)]="planning.duration" name="planning.duration" ></ion-datetime>
 				</ion-item>
 				<ion-item>
 					<button ion-button type="submit" full round>Save Details</button>

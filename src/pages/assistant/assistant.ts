@@ -19,10 +19,10 @@ export class AssistantPage {
   displaySection = 'base';
   // Details about when you would like to try to plan holding an event.
   planning = {
-    rangeStart: moment().format(),
-    rangeEnd: moment().format(),
+    lowerBound: moment().format(),
+    upperBound: moment().format(),
     // Set to 00:00 *DO NOT CHANGE*
-    plannedDuration: "2018-01-01T00:00:00-04:00",
+    duration: "2018-01-01T00:00:00-04:00",
   };
   // All events on calendar between set range of dates.
   plannedEvents = [];
@@ -47,15 +47,15 @@ export class AssistantPage {
   // Finds busy times within the range of planning variable.
   findBusyTimes() {
     // Head of range for avaible start time.
-    var inputRangeStart_TextType = moment(this.planning.rangeStart).format("MM/DD/YYYY");
-    var inputRangeStart_DateType = moment(inputRangeStart_TextType, "MM/DD/YYYY");
+    var lowerBound_TextType = moment(this.planning.lowerBound).format("MM/DD/YYYY");
+    var lowerBound_DateType = moment(lowerBound_TextType, "MM/DD/YYYY");
     // Tail of range for avaible start time.
-    var inputRangeEnd_TextType = moment(this.planning.rangeEnd).format("MM/DD/YYYY");
-    var inputRangeEnd_DateType = moment(inputRangeEnd_TextType, "MM/DD/YYYY");
+    var upperBound_TextType = moment(this.planning.upperBound).format("MM/DD/YYYY");
+    var upperBound_DateType = moment(upperBound_TextType, "MM/DD/YYYY");
     // Calculates difference in days between head and tail of provided start times.
-    var daysBetween = inputRangeEnd_DateType.diff(inputRangeStart_DateType, 'd');
+    var daysBetween = upperBound_DateType.diff(lowerBound_DateType, 'd');
     // Holds incremented day titles.
-    var daysBetweenHolder = inputRangeStart_DateType;
+    var daysBetweenHolder = lowerBound_DateType;
     var busyTimes = [];
     for (daysBetween; daysBetween >= 0; daysBetween--) {
       if (this.plannedEvents[daysBetweenHolder.format("MM/DD/YYYY")] != undefined) {
@@ -72,45 +72,62 @@ export class AssistantPage {
     this.findBusyTimes();
     var availableTimes = [];
     // Head of range for avaible start time.
-    var inputRangeStart = moment(this.planning.rangeStart);
-    inputRangeStart.subtract(inputRangeStart.seconds(), "s");
+    var lowerBound = moment(this.planning.lowerBound);
+    lowerBound.subtract(lowerBound.seconds(), "s");
     // Tail of range for avaible start time.
-    var inputRangeEnd = moment(this.planning.rangeEnd);
-    inputRangeEnd.subtract(inputRangeEnd.seconds(), "s");
+    var upperBound = moment(this.planning.upperBound);
+    upperBound.subtract(upperBound.seconds(), "s");
     // Pulling the planned duration of the event from the given user input.
-    var plannedHours = moment(this.planning.plannedDuration).hours() + 1;
+    var plannedHours = moment(this.planning.duration).hours() + 1;
     // Handle weird return value when input for hours is 00.
     if (plannedHours == 24) {
       plannedHours = 0;
     }
-    var plannedMinutes = moment(this.planning.plannedDuration).minutes();
+    var plannedMinutes = moment(this.planning.duration).minutes();
     // Holding values of allocated times of dates.
     var eventSplit;
     var eventStart;
     var eventEnd;
-    var timeBetweenEvents;
     // Loop through all busy times to find an unoccupied slot.
     for (var i = 0; i < this.busyTimes.length; i++) {
       eventSplit = this.busyTimes[i].split("split_here");
       eventStart = moment(eventSplit[0]);
+      eventStart.subtract(eventStart.seconds(), "s");
       eventEnd = moment(eventSplit[1]);
-      eventStart = eventStart.subtract(eventStart.seconds(), "s");
-      eventEnd = eventEnd.subtract(eventEnd.seconds(), "s");
+      eventEnd.subtract(eventEnd.seconds(), "s");
       // Event starts before range head.
-      if (eventStart.isBefore(inputRangeStart)) {
+      if (eventStart.isBefore(lowerBound)) {
         // Event ends before range start.
-        if (eventEnd.isBefore(inputRangeStart)) {
-          console.log("Event starts before and ends before.");
+        if (eventEnd.isBefore(lowerBound)) {
+          console.log("Event starts before and ends before our bounds.",eventStart.format(), eventEnd.format());
           continue;
         }
         // Event ends after range head.
         else {
           // Event ends between given range.
-          if (eventEnd.isBefore(inputRangeEnd)) {
-            // Calculate free time from event end until range tail.
+          if (eventEnd.isBefore(upperBound)) {
+            var availableHours = upperBound.diff(eventEnd, "h"); 
+            var availableMinutes = upperBound.diff(eventEnd, "m");
+            // Calculate free time from event end until upperbound.
+            // If there is not enough time event cannot be planned in that slot.
+            if (plannedHours > availableHours) {
+              console.log("Not long enough duration for planning event.",eventEnd.format(), upperBound.format());
+              break;
+            }
+            if (plannedHours == availableHours) {
+              if (plannedMinutes > availableMinutes) {
+                console.log("Not long enough duration for planning event.",eventEnd.format(), upperBound.format());
+                break;
+              }
+              lowerBound = eventEnd;
+              console.log("Lower bound changed", lowerBound);
+              continue;
+            }
+            lowerBound = eventEnd;
+            console.log("Lower bound changed", lowerBound);
             continue;
           }
-          // There is event during this time.
+          // There is an event during this time.
           else {
             console.log("Event is allocated for this time.");
             break;
