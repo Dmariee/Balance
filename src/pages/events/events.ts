@@ -23,7 +23,7 @@ export class EventsPage {
     priority: "", 
   };
   eventHolder: any = [];
-  availableTimes = {};
+  plannedEvents = {};
 
   goBack() {
     this.navParams.get("parentPage").updateCalendar(this.eventHolder);
@@ -43,24 +43,22 @@ export class EventsPage {
       priority: this.event.priority,
   	});
     this.navParams.get("parentPage").updateCalendar(this.eventHolder);
-    if (!(inputDate in this.availableTimes)) {
+    if (!(inputDate in this.plannedEvents)) {
       inputHolder.push(inputFiller);
-      this.availableTimes[inputDate] = inputHolder;
+      this.plannedEvents[inputDate] = inputHolder;
     }
     else {
-      inputHolder = this.availableTimes[inputDate];
+      inputHolder = this.plannedEvents[inputDate];
       inputHolder.push(inputFiller);
       inputHolder.sort();
-      this.availableTimes[inputDate] = inputHolder;
+      this.plannedEvents[inputDate] = inputHolder;
     }
-
-    console.log(this.availableTimes[inputDate]);
     this.navCtrl.pop();
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   	this.eventHolder = navParams.get("eventHolder");
-    this.availableTimes = navParams.get("availableTimes");
+    this.plannedEvents = navParams.get("plannedEvents");
   }
 
   ionViewDidLoad() {

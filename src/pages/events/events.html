@@ -12,7 +12,7 @@
             <ion-icon name="arrow-back"></ion-icon>
         </button>
     </ion-buttons>
-    <ion-title>Adding Event</ion-title>
+    <ion-title>Add An Event</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -42,7 +42,11 @@
       </ion-item>
       <ion-item>
         <ion-label inline>Priority</ion-label>
-        <ion-input type="number" [(ngModel)]="event.priority" name="event.priority"></ion-input>
+        <ion-select [(ngModel)]="event.priority" name="event.priority">
+          <ion-option value="High" >High</ion-option>
+          <ion-option value="Medium">Medium</ion-option>
+          <ion-option value="Low">Low</ion-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <button ion-button type="submit" full round>Save Event</button>
