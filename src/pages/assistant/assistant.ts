@@ -71,7 +71,8 @@ export class AssistantPage {
       default:
         for (var i = 0; i < this.availableTimes.length; i++) {
           var eventStart = moment((this.availableTimes[i].split("split_here"))[0]);
-          var eventEnd = eventStart.add({hours: plannedHours, minutes: plannedMinutes});
+          var eventEnd = moment((this.availableTimes[i].split("split_here"))[0]);
+          eventEnd = eventEnd.add({hours: plannedHours, minutes: plannedMinutes});
           this.suggestions.push(eventStart.format("MMMM DD hh:mm a") + " - " + eventEnd.format("MMMM DD hh:mm a"));
         }
     }
