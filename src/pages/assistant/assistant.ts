@@ -70,7 +70,7 @@ export class AssistantPage {
   //Finds avaible times within the range of planning variable.
   findAvailableTimes() {
     this.findBusyTimes();
-    var availableTimes = [];
+    console.log(this.busyTimes);
     // Head of range for avaible start time.
     var lowerBound = moment(this.planning.lowerBound);
     lowerBound.subtract(lowerBound.seconds(), "s");
@@ -84,13 +84,28 @@ export class AssistantPage {
       plannedHours = 0;
     }
     var plannedMinutes = moment(this.planning.duration).minutes();
-    // Holding values of allocated times of dates.
+    // If there are no busy times you are free to plan within given range.
+    if (this.busyTimes.length == 0) {
+      this.availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+      return;
+    }
+    // Find available times driver.
+    var availableTimes = this.recurseDays(this.busyTimes, lowerBound, upperBound, plannedHours, plannedMinutes, 0);
+    console.log(availableTimes);
+    this.availableTimes = availableTimes;
+  }
+
+  recurseDays(busyTimes, lowerBound, upperBound, plannedHours, plannedMinutes, index) {
+    var availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+    // Holding values of allocated times for dates.
     var eventSplit;
     var eventStart;
     var eventEnd;
+    var availableHours;
+    var availableMinutes;
     // Loop through all busy times to find an unoccupied slot.
-    for (var i = 0; i < this.busyTimes.length; i++) {
-      eventSplit = this.busyTimes[i].split("split_here");
+    for (index; index < busyTimes.length; index++) {
+      eventSplit = this.busyTimes[index].split("split_here");
       eventStart = moment(eventSplit[0]);
       eventStart.subtract(eventStart.seconds(), "s");
       eventEnd = moment(eventSplit[1]);
@@ -99,44 +114,86 @@ export class AssistantPage {
       if (eventStart.isBefore(lowerBound)) {
         // Event ends before range start.
         if (eventEnd.isBefore(lowerBound)) {
-          console.log("Event starts before and ends before our bounds.",eventStart.format(), eventEnd.format());
+          console.log("Event starts before and ends before our bounds.");
           continue;
         }
-        // Event ends after range head.
-        else {
-          // Event ends between given range.
-          if (eventEnd.isBefore(upperBound)) {
-            var availableHours = upperBound.diff(eventEnd, "h"); 
-            var availableMinutes = upperBound.diff(eventEnd, "m");
-            // Calculate free time from event end until upperbound.
-            // If there is not enough time event cannot be planned in that slot.
+        // Event ends between given range.
+        if (eventEnd.isBefore(upperBound)) {
+          availableHours = upperBound.diff(eventEnd, "h");
+          availableMinutes = upperBound.diff(eventEnd, "m");
+          // Calculate free time from event end until upper bound.
+          // If there is not enough time event cannot be planned in that slot.
+          if (plannedHours > availableHours) {
+            console.log("Not long enough duration for planning event.");
+            return new Array;
+          }
+          if (plannedHours == availableHours) {
+            if (plannedMinutes > availableMinutes) {
+              console.log("Not long enough duration for planning event.");
+              return new Array;
+            }
+            lowerBound = eventEnd;
+            console.log("Lower bound changed (1).");
+            availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+            continue;
+          }
+          lowerBound = eventEnd;
+          console.log("Lower bound changed (2).");
+          availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+          continue;
+        }
+        // There is an event during this time.
+        console.log("Event is allocated for this time.");
+        return new Array;
+      }
+      else {
+        // Event happens after given range.
+        if (eventStart.isAfter(upperBound)) {
+          return  new Array;
+        }
+        // Event starts between the range and ends after.
+        if (eventEnd.isAfter(upperBound)) {
+            availableHours = eventStart.diff(lowerBound, "h");
+            availableMinutes = eventStart.diff(lowerBound, "m");
             if (plannedHours > availableHours) {
-              console.log("Not long enough duration for planning event.",eventEnd.format(), upperBound.format());
-              break;
+              console.log("Not long enough duration for planning event.");
+              return new Array;
             }
             if (plannedHours == availableHours) {
               if (plannedMinutes > availableMinutes) {
-                console.log("Not long enough duration for planning event.",eventEnd.format(), upperBound.format());
-                break;
+                console.log("Not long enough duration for planning event.");
+                return new Array;
               }
-              lowerBound = eventEnd;
-              console.log("Lower bound changed", lowerBound);
+              upperBound = eventStart;
+              console.log("Upper bound changed (1).");
+              availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
               continue;
             }
-            lowerBound = eventEnd;
-            console.log("Lower bound changed", lowerBound);
+            // plannedhours < availableHours.
+            upperBound = eventStart;
+            console.log("Upper bound changed (2).");
+            availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
             continue;
-          }
-          // There is an event during this time.
-          else {
-            console.log("Event is allocated for this time.");
-            break;
-          }
         }
+        // Event is in between given range.
+        console.log("Recursing");
+        var split_1 = [];
+        var split_2 = [];
+        // Sanity checks for split ranges.
+        if ((plannedHours < eventStart.diff(lowerBound, "h")) ||
+          ((plannedHours == eventStart.diff(lowerBound, "h")) && (plannedMinutes <= eventStart.diff(lowerBound, "m")))) {
+          split_1 = this.recurseDays(busyTimes, lowerBound, eventStart, plannedHours, plannedMinutes, index + 1);
+        }
+        if ((plannedHours < upperBound.diff(eventEnd, "h")) ||
+          ((plannedHours == upperBound.diff(eventEnd, "h")) && (plannedMinutes <= upperBound.diff(eventEnd, "m")))) {
+          split_2 = this.recurseDays(busyTimes, eventEnd, upperBound, plannedHours, plannedMinutes, index + 1);
+        }
+        availableTimes = split_1.concat(split_2);
+        availableTimes.sort();
       }
     }
+    return availableTimes;
   }
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.plannedEvents = navParams.get("plannedEvents");
