@@ -1,0 +1,87 @@
+<!--
+  Generated template for the UploadPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar padding>
+    <ion-title>Add Event</ion-title>
+
+    <ion-buttons start>
+      <button ion-button icon-only (click)="dismissModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+	<ion-list>
+	<ion-item>
+		<ion-label>Event Name:</ion-label>
+		<ion-input type="text" [(ngModel)]="newEvent.eventName"></ion-input>
+	</ion-item>
+
+	<ion-item>
+		<ion-label>Event Host:</ion-label>
+		<ion-input type="text" [(ngModel)]="newEvent.eventHost"></ion-input>
+	</ion-item>
+
+	<ion-item class = "date-time">
+		<ion-label>Date:</ion-label>
+		<ion-datetime displayFormat = "MMM DD, YYYY hh:mm A" pickerFormat="MMM DD, YYYY hh:mm A" [(ngModel)]="newEvent.date"></ion-datetime>
+
+	</ion-item>
+
+	<ion-item>
+		<ion-label>Location:</ion-label>
+		<ion-input type="text" [(ngModel)]="newEvent.location"></ion-input>
+	</ion-item>
+
+	<ion-item>
+		<ion-label>Cover URL:</ion-label>
+		<ion-input type="text" [(ngModel)]="newEvent.coverURL"></ion-input>
+	</ion-item>
+
+	<ion-item>
+    	<ion-label>Category:</ion-label>
+    		<ion-select [(ngModel)]="newEvent.category">
+      			<ion-option value="Arts">Arts</ion-option>
+      			<ion-option value="College">College</ion-option>
+      			<ion-option value="Education">Education</ion-option>
+      			<ion-option value="Music">Music</ion-option>
+      			<ion-option value="Nightlife">Nightlife</ion-option>
+      			<ion-option value="Sports">Sports</ion-option>
+      			<ion-option value="Volunteering">Volunteering</ion-option>
+      			<ion-option value="Festivals">Festivals</ion-option>
+      			<ion-option value="Family">Family</ion-option>
+      			<ion-option value="Eats">Eats</ion-option>
+      			<ion-option value="Comedy">Comedy</ion-option>
+    		</ion-select>
+  	</ion-item>
+
+	<ion-item>
+
+		<ion-label>Description:</ion-label>
+		
+		<ion-textarea rows="5" [(ngModel)]="newEvent.description"></ion-textarea> 
+
+	</ion-item>
+
+	<ion-item>
+		<ion-label>Tags:</ion-label>
+		<ion-textarea rows="3" [(ngModel)]="newEvent.tags"></ion-textarea>  
+	</ion-item>
+
+	<button ion-button full (click)="addEvent_2(newEvent)">Upload Event</button>
+    </ion-list>
+
+
+</ion-content>

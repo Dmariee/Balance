@@ -1,0 +1,50 @@
+<ion-header>
+
+  <ion-navbar hideBackButton color="primary">
+    <ion-buttons left>
+        <button ion-button (click)="goBack()">
+            <ion-icon name="arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-title> Add An Event </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <form (ngSubmit)="saveEvent()">
+    <ion-list>
+      <ion-item>
+        <ion-label floating> Title </ion-label>
+        <ion-input type="text" [(ngModel)]="event.title" name="event.title"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating> Description </ion-label>
+        <ion-input type="text" [(ngModel)]="event.description" name="event.description"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating> Location </ion-label>
+        <ion-input type="text" [(ngModel)]="event.location" name="event.location"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating> Start Date </ion-label>
+        <ion-datetime displayFormat="MMMM DD YYYY hh:mm a" pickerFormat="MMM DD YY hh mm a" [(ngModel)]="event.startTime" name="event.startTime"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label floating> End Date </ion-label>
+        <ion-datetime displayFormat="MMMM DD YYYY hh:mm a" pickerFormat="MMM DD YY hh mm a" [(ngModel)]="event.endTime" name="event.endTime"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label floating> Priority </ion-label>
+        <ion-select [(ngModel)]="event.priority" name="event.priority">
+          <ion-option value="High" > High </ion-option>
+          <ion-option value="Medium"> Medium </ion-option>
+          <ion-option value="Low"> Low </ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <button ion-button type="submit" full round> Save Event </button>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

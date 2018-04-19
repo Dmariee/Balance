@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { CategoryPage } from "../category/category";
+import { ModalController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
+import { UploadPage } from "../upload/upload";
 
 /**
  * Generated class for the EventsPage page.
@@ -20,7 +23,7 @@ public categories:Array<any>=[] ;
 
 public pushPage: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
   	this.categories = [];   
   }
 
@@ -80,6 +83,22 @@ public pushPage: any;
 
  	this.navCtrl.push(CategoryPage, data);
 
+  }
+
+  addEvent_2(){
+
+    let modal = this.modalCtrl.create(UploadPage);
+    modal.present();
+
+  }
+
+  showAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Success!',
+      subTitle: 'Your event has been posted!',
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 

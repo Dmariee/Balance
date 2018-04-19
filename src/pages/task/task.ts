@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { EventsPage } from '../events/events';
+import { ScheduleEventPage } from '../schedule-event/schedule-event';
 import { TemplatePage } from '../template/template';
 import { AssistantPage } from '../assistant/assistant';
 
@@ -28,9 +28,9 @@ export class TaskPage {
         currentDate: new Date(),
     };
 
-    addEvent() {
+    scheduleEvent() {
         this.eventSource = [];
-        this.navCtrl.push(EventsPage, {
+        this.navCtrl.push(ScheduleEventPage, {
             "eventHolder": this.eventHolder,
             "plannedEvents": this.plannedEvents,
             "parentPage": this,

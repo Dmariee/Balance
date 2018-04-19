@@ -15,6 +15,8 @@ import { EventsPage } from '../pages/events/events';
 import { TemplatePage } from '../pages/template/template';
 import { AssistantPage } from '../pages/assistant/assistant';
 import { CategoryPage } from '../pages/category/category';
+import { UploadPage } from '../pages/upload/upload';
+import { ScheduleEventPage } from '../pages/schedule-event/schedule-event';
 
 import { AngularFireModule } from 'angularfire2';
 import { firebaseConfig } from './environment';
@@ -29,9 +31,11 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
     FriendPage,
     ExplorePage,
     EventsPage,
+    ScheduleEventPage,
     TemplatePage,
     AssistantPage,
-    CategoryPage
+    CategoryPage,
+    UploadPage
   ],
   imports: [
     BrowserModule,
@@ -48,9 +52,11 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
     FriendPage,
     ExplorePage,
     EventsPage,
+    ScheduleEventPage,
     TemplatePage,
     AssistantPage,
-    CategoryPage
+    CategoryPage,
+    UploadPage
   ],
   providers: [
     StatusBar,
