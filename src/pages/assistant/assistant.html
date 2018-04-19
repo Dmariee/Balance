@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Your Personal Assistant</ion-title>
+    <ion-title> Your Personal Assistant </ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -17,7 +17,7 @@
 	<div *ngIf="displaySection == 'base'">
 		<h1> How may I help you? </h1>
 		<ion-item>
-			<ion-select #C (ionChange)="getNextDisplay(C.value)">
+			<ion-select #Base (ionChange)="getNextDisplay(Base.value)">
 				<ion-option value="planEvent" >Plan an event</ion-option>
 				<ion-option value="lookupEvent">Look for an event</ion-option>>
 			</ion-select>
@@ -25,7 +25,7 @@
 	</div>
 	<div *ngIf="displaySection == 'planEvent'">
 		<h1> Tell me more </h1>
-		<form (ngSubmit)="findAvailableTimes()">
+		<form (ngSubmit)="getNextDisplay('giveSuggestion')">
 			<ion-list>
 				<ion-item>
 					<ion-label floating> Range Start </ion-label>
@@ -45,6 +45,17 @@
 			</ion-list>
 		</form>
 	</div>
+	<div *ngIf="displaySection == 'giveSuggestion'">
+		<h1> Here's what I think </h1>
+	</div>
 	<div *ngIf="displaySection == 'lookupEvent'">
+		<h1> What's the mood? </h1>
+		<ion-item>
+        <ion-label floating> Event Category </ion-label>
+        <ion-select [(ngModel)]="eventTagSearch" name="eventTagSearch" (ionChange)="showEventTag()">
+          <ion-option value="Social" > Social </ion-option>
+          <ion-option value="Academic"> Academic </ion-option>
+        </ion-select>
+      </ion-item>
 	</div>
 </ion-content>

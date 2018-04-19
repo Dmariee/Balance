@@ -31,6 +31,8 @@ export class AssistantPage {
   // Times you have events already allocated to; only override if planned event has
   // higher priorty and conflicts in scheduling.
   busyTimes = [];
+  // Finds events based on tag input.
+  eventTagSearch = "";
 
   // Change value of display section; causes divs to be hidden when display section is
   // not referenced.
@@ -39,9 +41,24 @@ export class AssistantPage {
       case "planEvent":
         this.displaySection = displaySection;
         break;
+      case "giveSuggestion":
+        this.giveSuggestion();
+        this.displaySection = displaySection;
+        break;
       case "lookupEvent":
         this.displaySection = displaySection;
+        break;
     }
+  }
+
+  // Give suggestions based on available times.
+  giveSuggestion() {
+    this.findAvailableTimes();
+    console.log(this.availableTimes);
+  }
+
+  showEventTag() {
+    console.log(this.eventTagSearch);
   }
 
   // Finds busy times within the range of planning variable.
@@ -70,7 +87,6 @@ export class AssistantPage {
   //Finds avaible times within the range of planning variable.
   findAvailableTimes() {
     this.findBusyTimes();
-    console.log(this.busyTimes);
     // Head of range for avaible start time.
     var lowerBound = moment(this.planning.lowerBound);
     lowerBound.subtract(lowerBound.seconds(), "s");
@@ -87,12 +103,10 @@ export class AssistantPage {
     // If there are no busy times you are free to plan within given range.
     if (this.busyTimes.length == 0) {
       this.availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
-      console.log(this.availableTimes);
       return;
     }
     // Find available times driver.
     var availableTimes = this.recurseDays(this.busyTimes, lowerBound, upperBound, plannedHours, plannedMinutes, 0);
-    console.log(availableTimes);
     this.availableTimes = availableTimes;
   }
 
@@ -115,7 +129,6 @@ export class AssistantPage {
       if (eventStart.isBefore(lowerBound)) {
         // Event ends before range start.
         if (eventEnd.isBefore(lowerBound)) {
-          console.log("Event starts before and ends before our bounds.");
           continue;
         }
         // Event ends between given range.
@@ -125,26 +138,21 @@ export class AssistantPage {
           // Calculate free time from event end until upper bound.
           // If there is not enough time event cannot be planned in that slot.
           if (plannedHours > availableHours) {
-            console.log("Not long enough duration for planning event.");
             return new Array;
           }
           if (plannedHours == availableHours) {
             if (plannedMinutes > availableMinutes) {
-              console.log("Not long enough duration for planning event.");
               return new Array;
             }
             lowerBound = eventEnd;
-            console.log("Lower bound changed (1).");
             availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
             continue;
           }
           lowerBound = eventEnd;
-          console.log("Lower bound changed (2).");
           availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
           continue;
         }
         // There is an event during this time.
-        console.log("Event is allocated for this time.");
         return new Array;
       }
       else {
@@ -157,27 +165,22 @@ export class AssistantPage {
             availableHours = eventStart.diff(lowerBound, "h");
             availableMinutes = eventStart.diff(lowerBound, "m");
             if (plannedHours > availableHours) {
-              console.log("Not long enough duration for planning event.");
               return new Array;
             }
             if (plannedHours == availableHours) {
               if (plannedMinutes > availableMinutes) {
-                console.log("Not long enough duration for planning event.");
                 return new Array;
               }
               upperBound = eventStart;
-              console.log("Upper bound changed (1).");
               availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
               continue;
             }
             // plannedhours < availableHours.
             upperBound = eventStart;
-            console.log("Upper bound changed (2).");
             availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
             continue;
         }
         // Event is in between given range.
-        console.log("Recursing");
         var split_1 = [];
         var split_2 = [];
         // Sanity checks for split ranges.
