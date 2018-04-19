@@ -87,6 +87,7 @@ export class AssistantPage {
     // If there are no busy times you are free to plan within given range.
     if (this.busyTimes.length == 0) {
       this.availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+      console.log(this.availableTimes);
       return;
     }
     // Find available times driver.
