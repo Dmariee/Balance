@@ -16,6 +16,11 @@ import { TemplatePage } from '../pages/template/template';
 import { AssistantPage } from '../pages/assistant/assistant';
 import { CategoryPage } from '../pages/category/category';
 
+import { AngularFireModule } from 'angularfire2';
+import { firebaseConfig } from './environment';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -32,6 +37,8 @@ import { CategoryPage } from '../pages/category/category';
     BrowserModule,
     NgCalendarModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

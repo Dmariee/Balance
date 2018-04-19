@@ -35,6 +35,30 @@
             {
               "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"FirebasePlugin\"><param name=\"ios-package\" value=\"FirebasePlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "*/Entitlements-Debug.plist": {
+        "parents": {
+          "aps-environment": [
+            {
+              "xml": "<string>development</string>",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "*/Entitlements-Release.plist": {
+        "parents": {
+          "aps-environment": [
+            {
+              "xml": "<string>production</string>",
+              "count": 1
             }
           ]
         }
@@ -58,6 +82,9 @@
       "PACKAGE_NAME": "io.ionic.starter"
     },
     "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-firebase": {
       "PACKAGE_NAME": "io.ionic.starter"
     }
   },
@@ -126,6 +153,14 @@
       "clobbers": [
         "navigator.geolocation"
       ]
+    },
+    {
+      "id": "cordova-plugin-firebase.FirebasePlugin",
+      "file": "plugins/cordova-plugin-firebase/www/firebase.js",
+      "pluginId": "cordova-plugin-firebase",
+      "clobbers": [
+        "FirebasePlugin"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -134,6 +169,7 @@
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-ionic-webview": "1.2.0",
     "cordova-plugin-ionic-keyboard": "2.0.5",
-    "cordova-plugin-geolocation": "4.0.1"
+    "cordova-plugin-geolocation": "4.0.1",
+    "cordova-plugin-firebase": "1.0.0"
   }
 }

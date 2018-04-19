@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { Observable } from 'rxjs/Observable';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { ActionSheetController } from 'ionic-angular';
 /**
  * Generated class for the CategoryPage page.
  *
@@ -15,11 +17,51 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CategoryPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+public catTitle: String;
+public eventRef: Observable<any[]>
+
+  constructor(public actionSheetCtrl: ActionSheetController, private database: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams) {
+  	this.eventRef = this.database.list(this.navParams.get('ID')).valueChanges();
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CategoryPage');
+
+  	this.catTitle = this.navParams.get('ID')
+    
+  }
+
+  presentActionSheet() {
+    let actionSheet = this.actionSheetCtrl.create({
+   
+      buttons: [
+        {
+          text: 'Save',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        },{
+          text: 'Share',
+          handler: () => {
+            console.log('Archive clicked');
+          }
+        },
+        {
+          text: 'Report',
+          role: 'destructive',
+          handler: () => {
+            console.log('Report clicked');
+          }
+
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
 }

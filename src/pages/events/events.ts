@@ -18,6 +18,8 @@ export class EventsPage {
 
 public categories:Array<any>=[] ;
 
+public pushPage: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   	this.categories = [];   
   }
@@ -72,13 +74,11 @@ public categories:Array<any>=[] ;
     console.log('ionViewDidLoad EventsPage');
   }
 
-  buttonClick(id:string){
+  buttonClick(pageID:string){
 
+  	let data = {ID: pageID};
 
-  	this.navCtrl.push(CategoryPage);
-
-
-
+ 	this.navCtrl.push(CategoryPage, data);
 
   }
 

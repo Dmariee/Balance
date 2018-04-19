@@ -6,13 +6,43 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>category</ion-title>
+  <ion-navbar color = primary>
+    <ion-title>{{catTitle}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+
+	<ion-list no-lines>
+  <ion-card *ngFor="let event of eventRef | async">
+
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="http://hw-avy.datpiff.com/5/DJ927.gif">
+      </ion-avatar>
+      <h2>{{event.eventName}}</h2>
+      <p>{{event.date}}</p>
+      <p>{{event.location}}</p>
+
+    <ion-buttons item-end>
+      <button ion-button icon-left clear (click)="presentActionSheet()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+   </ion-buttons>
+
+   </ion-item>
+
+
+
+    <img src="{{event.coverURL}}">
+
+    <ion-card-content>
+      {{event.description}}
+    </ion-card-content>
+    
+  </ion-card> 
+  </ion-list>
 
 </ion-content>

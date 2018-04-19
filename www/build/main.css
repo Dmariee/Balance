@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .ion-ios-add:before {
   content: "\f102";
 }
@@ -25676,6 +25677,37 @@ ion-navbar.toolbar {
   padding-bottom: calc(env(safe-area-inset-bottom) + 4px);
   min-height: calc(46px + constant(safe-area-inset-bottom));
   min-height: calc(46px + env(safe-area-inset-bottom));
+}
+
+h1 {
+  text-align: center;
+  font: bold 80px "Courier New", Courier, monospace;
+  color: dodgerblue;
+  -webkit-perspective: 9999px;
+  perspective: 9999px;
+  -webkit-animation: ಠ_ಠ 5s infinite alternate ease-in-out -7.5s;
+  animation: ಠ_ಠ 5s infinite alternate ease-in-out -7.5s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform: rotateY(-30deg) rotateX(20deg) translateZ(0);
+  transform: rotateY(-30deg) rotateX(20deg) translateZ(0);
+  text-shadow: 1px 0px 0 rgba(30, 144, 255, 0.2), 2px 0px 0 rgba(30, 144, 255, 0.2), 3px 0px 0 rgba(30, 144, 255, 0.2);
+}
+
+@-webkit-keyframes ಠ_ಠ {
+  100% {
+    -webkit-transform: rotateY(-30deg) rotateX(-20deg);
+    transform: rotateY(-30deg) rotateX(-20deg);
+  }
+}
+
+@keyframes ಠ_ಠ {
+  100% {
+    -webkit-transform: rotateY(-30deg) rotateX(-20deg);
+    transform: rotateY(-30deg) rotateX(-20deg);
+  }
 }
 
 .ios page-explore .scroll, .md page-explore .scroll {
