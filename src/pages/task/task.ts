@@ -39,7 +39,9 @@ export class TaskPage {
 
     callAssistant() {
         this.navCtrl.push(AssistantPage, {
+            "eventHolder": this.eventHolder,
             "plannedEvents": this.plannedEvents,
+            "parentPage": this,
         });
     }
 

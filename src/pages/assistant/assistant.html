@@ -6,7 +6,12 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar hideBackButton color="primary">
+    <ion-buttons left>
+        <button ion-button (click)="goBack()">
+            <ion-icon name="arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
     <ion-title> Your Personal Assistant </ion-title>
   </ion-navbar>
 
@@ -47,17 +52,47 @@
 	</div>
 	<div *ngIf="displaySection == 'giveSuggestion'">
 		<h1> Here's what I think </h1>
-		<h2 style="text-align: center; color: dodgerblue;"> {{suggestionComment}} </h2>
-		<ion-list>
-			<button ion-item *ngFor="let suggestion of suggestions" (click)="addSuggestion($event)">
-				{{suggestion}}
-			</button>
-		</ion-list>
+		<h2 style="text-align: center; color: dodgerblue;" *ngIf="!addingEvent"> {{suggestionComment}} </h2>
+		<form (ngSubmit)="saveSuggestion()">
+			<ion-list>
+				<div *ngIf="!addingEvent">
+					<button ion-item *ngFor="let suggestion of suggestions; let i=index"  (click)="pickSuggestion(i)">
+						{{suggestion}}
+					</button>
+				</div>
+				<ion-item *ngIf="addingEvent">
+					{{selectedSuggestion}}
+				</ion-item>
+				<ion-item *ngIf="addingEvent">
+			        <ion-label inline> Title </ion-label>
+			        <ion-input type="text" [(ngModel)]="event.title" name="event.title"></ion-input>
+			    </ion-item>
+			    <ion-item *ngIf="addingEvent">
+			        <ion-label inline> Description </ion-label>
+			        <ion-input type="text" [(ngModel)]="event.description" name="event.description"></ion-input>
+			    </ion-item>
+			    <ion-item *ngIf="addingEvent">
+			        <ion-label inline> Location </ion-label>
+			        <ion-input type="text" [(ngModel)]="event.location" name="event.location"></ion-input>
+			    </ion-item>
+				<ion-item *ngIf="addingEvent">
+					<ion-label inline> Priority </ion-label>
+					<ion-select [(ngModel)]="event.priority" name="event.priority">
+						<ion-option value="High" > High </ion-option>
+						<ion-option value="Medium"> Medium </ion-option>
+						<ion-option value="Low"> Low </ion-option>
+					</ion-select>
+				</ion-item>
+				<ion-item>
+					<button *ngIf="addingEvent" ion-button type="submit" full round> Save Event </button>
+				</ion-item>
+			</ion-list>
+		</form>
 	</div>
 	<div *ngIf="displaySection == 'lookupEvent'">
 		<h1> What's the mood? </h1>
 		<ion-item>
-        <ion-label floating> Event Category </ion-label>
+        <ion-label inline> Event Category </ion-label>
         <ion-select [(ngModel)]="eventTagSearch" name="eventTagSearch" (ionChange)="showEventTag()">
           <ion-option value="Social" > Social </ion-option>
           <ion-option value="Academic"> Academic </ion-option>

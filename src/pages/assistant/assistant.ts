@@ -24,8 +24,17 @@ export class AssistantPage {
     // Set to 00:00 *DO NOT CHANGE*
     duration: "2018-01-01T00:00:00-04:00",
   };
-  // All events on calendar between set range of dates.
-  plannedEvents = [];
+  // Is personal assistant adding an event.
+  addingEvent = false;
+  event = {
+    title: "",
+    description: "",
+    location: "",
+    priority: "",
+  };
+  selectedSuggestion = "";
+  eventHolder = [];
+  plannedEvents = {};
   // Times you are available; make suggestions based on this set.
   availableTimes = [];
   // Times you have events already allocated to; only override if planned event has
@@ -36,6 +45,7 @@ export class AssistantPage {
   // Top suggested choices.
   suggestions = [];
   suggestionComment = "I suggest the following slot(s):";
+
 
   // Change value of display section; causes divs to be hidden when display section is
   // not referenced.
@@ -52,6 +62,41 @@ export class AssistantPage {
         this.displaySection = displaySection;
         break;
     }
+  }
+
+  goBack() {
+    this.navParams.get("parentPage").updateCalendar(this.eventHolder);
+    this.navCtrl.pop();
+  }
+
+  saveSuggestion() {
+    var startTime = new Date(this.selectedSuggestion.split("-")[0]);
+    console.log(startTime);
+    var endTime = new Date(this.selectedSuggestion.split("-")[1]);
+    console.log(endTime);
+    var inputDate = moment(startTime).format("MM/DD/YYYY");
+    var inputFiller = moment(startTime).format() + "split_here" + moment(endTime).format();
+    var inputHolder = new Array();
+    this.eventHolder.push({
+      title: this.event.title,
+      description: this.event.description,
+      location: this.event.location,
+      startTime: startTime,
+      endTime: endTime,
+      priority: this.event.priority,
+    });
+    this.navParams.get("parentPage").updateCalendar(this.eventHolder);
+    if (!(inputDate in this.plannedEvents)) {
+      inputHolder.push(inputFiller);
+      this.plannedEvents[inputDate] = inputHolder;
+    }
+    else {
+      inputHolder = this.plannedEvents[inputDate];
+      inputHolder.push(inputFiller);
+      inputHolder.sort();
+      this.plannedEvents[inputDate] = inputHolder;
+    }
+    this.navCtrl.pop();
   }
 
   // Give suggestions based on available times.
@@ -73,13 +118,14 @@ export class AssistantPage {
           var eventStart = moment((this.availableTimes[i].split("split_here"))[0]);
           var eventEnd = moment((this.availableTimes[i].split("split_here"))[0]);
           eventEnd = eventEnd.add({hours: plannedHours, minutes: plannedMinutes});
-          this.suggestions.push(eventStart.format("MMMM DD hh:mm a") + " - " + eventEnd.format("MMMM DD hh:mm a"));
+          this.suggestions.push(eventStart.format("MMMM DD YY hh:mm a") + " - " + eventEnd.format("MMMM DD YY hh:mm a"));
         }
     }
   }
 
-  addSuggestion(event) {
-    console.log(event);
+  pickSuggestion(index) {
+    this.addingEvent = true;
+    this.selectedSuggestion = this.suggestions[index];
   }
 
   showEventTag() {
@@ -225,6 +271,7 @@ export class AssistantPage {
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.eventHolder = navParams.get("eventHolder");
     this.plannedEvents = navParams.get("plannedEvents");
   }
 
