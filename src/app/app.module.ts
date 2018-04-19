@@ -14,6 +14,7 @@ import { ExplorePage } from '../pages/explore/explore';
 import { EventsPage } from '../pages/events/events';
 import { TemplatePage } from '../pages/template/template';
 import { AssistantPage } from '../pages/assistant/assistant';
+import { CategoryPage } from '../pages/category/category';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AssistantPage } from '../pages/assistant/assistant';
     EventsPage,
     TemplatePage,
     AssistantPage,
+    CategoryPage
   ],
   imports: [
     BrowserModule,
@@ -41,6 +43,7 @@ import { AssistantPage } from '../pages/assistant/assistant';
     EventsPage,
     TemplatePage,
     AssistantPage,
+    CategoryPage
   ],
   providers: [
     StatusBar,

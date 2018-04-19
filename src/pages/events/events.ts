@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import * as moment from 'moment';
+import { CategoryPage } from "../category/category";
+
 /**
  * Generated class for the EventsPage page.
  *
@@ -14,55 +15,73 @@ import * as moment from 'moment';
   templateUrl: 'events.html',
 })
 export class EventsPage {
-  event = { 
-    title: "",
-    description: "",
-    location: "",
-    startTime: moment().format(),
-    endTime: moment().format(),
-    priority: "", 
-  };
-  eventHolder: any = [];
-  plannedEvents = {};
 
-  goBack() {
-    this.navParams.get("parentPage").updateCalendar(this.eventHolder);
-    this.navCtrl.pop();
-  }
-
-  saveEvent() {
-    var inputDate = moment(this.event.startTime).format("MM/DD/YYYY");
-    var inputFiller = this.event.startTime + "split_here" + this.event.endTime;
-    var inputHolder = new Array();
-    this.eventHolder.push({
-  		title: this.event.title,
-      description: this.event.description,
-  		location: this.event.location,
-      startTime: new Date(this.event.startTime),
-      endTime: new Date(this.event.endTime),
-      priority: this.event.priority,
-  	});
-    this.navParams.get("parentPage").updateCalendar(this.eventHolder);
-    if (!(inputDate in this.plannedEvents)) {
-      inputHolder.push(inputFiller);
-      this.plannedEvents[inputDate] = inputHolder;
-    }
-    else {
-      inputHolder = this.plannedEvents[inputDate];
-      inputHolder.push(inputFiller);
-      inputHolder.sort();
-      this.plannedEvents[inputDate] = inputHolder;
-    }
-    this.navCtrl.pop();
-  }
+public categories:Array<any>=[] ;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-  	this.eventHolder = navParams.get("eventHolder");
-    this.plannedEvents = navParams.get("plannedEvents");
+  	this.categories = [];   
   }
 
   ionViewDidLoad() {
+  	this.categories.push(
+    {
+      image: 'assets/imgs/Unio-Arts.png',
+      pageID: 'Arts'
+    },
+    {
+      image: 'assets/imgs/Unio College.png',
+      pageID: 'College'
+    },
+    {
+      image: 'assets/imgs/Unio Education.png',
+      pageID: 'Education'
+    },
+    {
+      image: 'assets/imgs/Unio Music.png',
+      pageID: 'Music'
+    },
+    {
+      image: 'assets/imgs/Unio Nightlife.png',
+      pageID: 'Nightlife'
+    },
+    {
+      image: 'assets/imgs/Unio Sports.png',
+      pageID: 'Sports'
+    },
+    {
+      image: 'assets/imgs/Unio-Comedy.png',
+      pageID: 'Comedy'
+    },
+    {
+      image: 'assets/imgs/Unio-Volunteering.png',
+      pageID: 'Volunteer'
+    },
+    {
+      image: 'assets/imgs/Unio-Festival.png',
+      pageID: 'Festival'
+    },
+    {
+      image: 'assets/imgs/Unio-Family.png',
+      pageID: 'Family'
+    },
+    {
+      image: 'assets/imgs/Unio-Eats.png',
+      pageID: 'Eats'
+    },
+    )
     console.log('ionViewDidLoad EventsPage');
   }
 
+  buttonClick(id:string){
+
+
+  	this.navCtrl.push(CategoryPage);
+
+
+
+
+  }
+
+
 }
+
