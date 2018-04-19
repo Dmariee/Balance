@@ -47,6 +47,12 @@
 	</div>
 	<div *ngIf="displaySection == 'giveSuggestion'">
 		<h1> Here's what I think </h1>
+		<h2 style="text-align: center; color: dodgerblue;"> {{suggestionComment}} </h2>
+		<ion-list>
+			<button ion-item *ngFor="let suggestion of suggestions" (click)="addSuggestion($event)">
+				{{suggestion}}
+			</button>
+		</ion-list>
 	</div>
 	<div *ngIf="displaySection == 'lookupEvent'">
 		<h1> What's the mood? </h1>

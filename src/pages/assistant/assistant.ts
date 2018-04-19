@@ -33,6 +33,9 @@ export class AssistantPage {
   busyTimes = [];
   // Finds events based on tag input.
   eventTagSearch = "";
+  // Top suggested choices.
+  suggestions = [];
+  suggestionComment = "I suggest the following slot(s):";
 
   // Change value of display section; causes divs to be hidden when display section is
   // not referenced.
@@ -54,7 +57,28 @@ export class AssistantPage {
   // Give suggestions based on available times.
   giveSuggestion() {
     this.findAvailableTimes();
-    console.log(this.availableTimes);
+    var plannedHours = moment(this.planning.duration).hours() + 1;
+    if (plannedHours == 24) {
+      plannedHours = 0;
+    }
+    var plannedMinutes = moment(this.planning.duration).minutes();
+    switch (this.availableTimes.length) {
+      // No available times.
+      case 0:
+        this.suggestionComment = "There are no available times in given slot.";
+        this.suggestions.push("Return home");
+        return;
+      default:
+        for (var i = 0; i < this.availableTimes.length; i++) {
+          var eventStart = moment((this.availableTimes[i].split("split_here"))[0]);
+          var eventEnd = eventStart.add({hours: plannedHours, minutes: plannedMinutes});
+          this.suggestions.push(eventStart.format("MMMM DD hh:mm a") + " - " + eventEnd.format("MMMM DD hh:mm a"));
+        }
+    }
+  }
+
+  addSuggestion(event) {
+    console.log(event);
   }
 
   showEventTag() {
