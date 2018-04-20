@@ -31,29 +31,40 @@ export class EventsPage {
   }
 
   saveEvent() {
-    var inputDate = moment(this.event.startTime).format("MM/DD/YYYY");
-    var inputFiller = this.event.startTime + "split_here" + this.event.endTime;
-    var inputHolder = new Array();
-    this.eventHolder.push({
-  		title: this.event.title,
-      description: this.event.description,
-  		location: this.event.location,
-      startTime: new Date(this.event.startTime),
-      endTime: new Date(this.event.endTime),
-      priority: this.event.priority,
-  	});
-    this.navParams.get("parentPage").updateCalendar(this.eventHolder);
-    if (!(inputDate in this.plannedEvents)) {
-      inputHolder.push(inputFiller);
-      this.plannedEvents[inputDate] = inputHolder;
+    // Data vaildation checks.
+    if ((moment(this.event.endTime)).isBefore((moment(this.event.startTime)))) {
+      alert("End time cannot be before start time.");
+      this.goBack();
+    }
+    else if ((moment(this.event.endTime)).diff((moment(this.event.startTime)), "m") == 0) {
+      alert("End time cannot equal start time.");
+      this.goBack();
     }
     else {
-      inputHolder = this.plannedEvents[inputDate];
-      inputHolder.push(inputFiller);
-      inputHolder.sort();
-      this.plannedEvents[inputDate] = inputHolder;
+      var inputDate = moment(this.event.startTime).format("MM/DD/YYYY");
+      var inputFiller = this.event.startTime + "split_here" + this.event.endTime;
+      var inputHolder = new Array();
+      this.eventHolder.push({
+        title: this.event.title,
+        description: this.event.description,
+        location: this.event.location,
+        startTime: new Date(this.event.startTime),
+        endTime: new Date(this.event.endTime),
+        priority: this.event.priority,
+      });
+      this.navParams.get("parentPage").updateCalendar(this.eventHolder);
+      if (!(inputDate in this.plannedEvents)) {
+        inputHolder.push(inputFiller);
+        this.plannedEvents[inputDate] = inputHolder;
+      }
+      else {
+        inputHolder = this.plannedEvents[inputDate];
+        inputHolder.push(inputFiller);
+        inputHolder.sort();
+        this.plannedEvents[inputDate] = inputHolder;
+      }
+      this.navCtrl.pop();
     }
-    this.navCtrl.pop();
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {

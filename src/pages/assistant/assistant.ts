@@ -109,7 +109,7 @@ export class AssistantPage {
       // No available times.
       case 0:
         this.suggestionComment = "There are no available times in given slot.";
-        this.suggestions.push("Return home");
+        this.suggestions.push("Return to home.");
         return;
       default:
         for (var i = 0; i < this.availableTimes.length; i++) {
@@ -122,8 +122,13 @@ export class AssistantPage {
   }
 
   pickSuggestion(index) {
-    this.addingEvent = true;
-    this.selectedSuggestion = this.suggestions[index];
+    if (this.availableTimes.length == 0) {
+      this.goBack();
+    }
+    else {
+      this.addingEvent = true;
+      this.selectedSuggestion = this.suggestions[index];
+    }
   }
 
   showEventTag() {
@@ -169,14 +174,33 @@ export class AssistantPage {
       plannedHours = 0;
     }
     var plannedMinutes = moment(this.planning.duration).minutes();
+    // Data vaildation checks.
+    if ((plannedHours == 0) && (plannedMinutes == 0)) {
+      alert("Duration cannot be set to 0hrs 0mins.");
+      this.goBack();
+    }
+    else if (upperBound.isBefore(lowerBound)) {
+      alert("Upper bound cannot start before lower bound.");
+      this.goBack();
+    }
+    else if (upperBound.diff(lowerBound, "m") == 0) {
+      alert("Upper bound cannot equal lower bound.");
+      this.goBack();
+    }
+    else if ((moment(lowerBound).add({hours: plannedHours, minutes: plannedMinutes})).isAfter(upperBound)) {
+      alert("Duration between values is to large.");
+      this.goBack();
+    }
     // If there are no busy times you are free to plan within given range.
-    if (this.busyTimes.length == 0) {
+    else if (this.busyTimes.length == 0) {
       this.availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
       return;
     }
-    // Find available times driver.
-    var availableTimes = this.recurseDays(this.busyTimes, lowerBound, upperBound, plannedHours, plannedMinutes, 0);
-    this.availableTimes = availableTimes;
+    else {
+      // Find available times driver.
+      var availableTimes = this.recurseDays(this.busyTimes, lowerBound, upperBound, plannedHours, plannedMinutes, 0);
+      this.availableTimes = availableTimes;
+    }
   }
 
   recurseDays(busyTimes, lowerBound, upperBound, plannedHours, plannedMinutes, index) {
@@ -198,6 +222,7 @@ export class AssistantPage {
       if (eventStart.isBefore(lowerBound)) {
         // Event ends before range start.
         if (eventEnd.isBefore(lowerBound)) {
+          availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
           continue;
         }
         // Event ends between given range.
@@ -227,7 +252,8 @@ export class AssistantPage {
       else {
         // Event happens after given range.
         if (eventStart.isAfter(upperBound)) {
-          return  new Array;
+          availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+          return  availableTimes;
         }
         // Event starts between the range and ends after.
         if (eventEnd.isAfter(upperBound)) {

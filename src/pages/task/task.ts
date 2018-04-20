@@ -27,13 +27,9 @@ export class TaskPage {
         currentDate: new Date(),
     };
 
-    loadEvents() {
-        this.eventSource = this.createRandomEvents();
-    }
-
     createRandomEvents() {
         var events = [];
-        for (var i = 0; i < 20; i += 1) {
+        for (var i = 0; i < 10; i += 1) {
             var date = new Date();
             var startDay = Math.floor(Math.random() * 90) - 45;
             var endDay = Math.floor(Math.random() * 2) + startDay;
@@ -49,6 +45,7 @@ export class TaskPage {
                 endTime: endTime,
             });
         }
+        this.eventHolder = events;
         return events;
     }
 
@@ -62,6 +59,7 @@ export class TaskPage {
     }
 
     callAssistant() {
+        this.eventSource = [];
         this.navCtrl.push(AssistantPage, {
             "eventHolder": this.eventHolder,
             "plannedEvents": this.plannedEvents,
@@ -91,7 +89,7 @@ export class TaskPage {
     }
 
     ionViewDidLoad() {
+        this.updateCalendar(this.createRandomEvents());
         console.log('ionViewDidLoad TaskPage');
-        this.loadEvents();
     }
 }   
