@@ -22,7 +22,6 @@ export class TaskPage {
     eventSource: any = [];
     eventHolder: any = [];
     viewTitle;
-    isToday: boolean;
     calendar = {
         mode: 'month',
         currentDate: new Date(),
