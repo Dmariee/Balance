@@ -71,9 +71,7 @@ export class AssistantPage {
 
   saveSuggestion() {
     var startTime = new Date(this.selectedSuggestion.split("-")[0]);
-    console.log(startTime);
     var endTime = new Date(this.selectedSuggestion.split("-")[1]);
-    console.log(endTime);
     var inputDate = moment(startTime).format("MM/DD/YYYY");
     var inputFiller = moment(startTime).format() + "split_here" + moment(endTime).format();
     var inputHolder = new Array();
