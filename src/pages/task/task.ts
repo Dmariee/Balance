@@ -34,7 +34,7 @@ export class TaskPage {
 
     createRandomEvents() {
         var events = [];
-        for (var i = 0; i < 50; i += 1) {
+        for (var i = 0; i < 20; i += 1) {
             var date = new Date();
             var startDay = Math.floor(Math.random() * 90) - 45;
             var endDay = Math.floor(Math.random() * 2) + startDay;
