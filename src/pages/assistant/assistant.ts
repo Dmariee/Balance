@@ -35,6 +35,8 @@ export class AssistantPage {
   selectedSuggestion = "";
   eventHolder = [];
   plannedEvents = {};
+  plannedHours;
+  plannedMinutes;
   // Times you are available; make suggestions based on this set.
   availableTimes = [];
   // Times you have events already allocated to; only override if planned event has
@@ -55,6 +57,13 @@ export class AssistantPage {
         this.displaySection = displaySection;
         break;
       case "giveSuggestion":
+        var plannedHours = moment(this.planning.duration).hours() + 1;
+        if (plannedHours == 24) {
+          plannedHours = 0;
+        }
+        var plannedMinutes = moment(this.planning.duration).minutes();
+        this.plannedHours = plannedHours;
+        this.plannedMinutes = plannedMinutes;
         this.giveSuggestion();
         this.displaySection = displaySection;
         break;
@@ -67,6 +76,35 @@ export class AssistantPage {
   goBack() {
     this.navParams.get("parentPage").updateCalendar(this.eventHolder);
     this.navCtrl.pop();
+  }
+
+  // Give suggestions based on available times.
+  giveSuggestion() {
+    this.findAvailableTimes();
+    switch (this.availableTimes.length) {
+      // No available times.
+      case 0:
+        this.suggestionComment = "There are no available times in given slot.";
+        this.suggestions.push("Return to home.");
+        break;
+      default:
+        for (var i = 0; i < this.availableTimes.length; i++) {
+          var eventStart = moment((this.availableTimes[i].split("split_here"))[0]);
+          var eventEnd = moment((this.availableTimes[i].split("split_here"))[0]);
+          eventEnd = eventEnd.add({hours: this.plannedHours, minutes: this.plannedMinutes});
+          this.suggestions.push(eventStart.format("MMMM DD YY hh:mm a") + " - " + eventEnd.format("MMMM DD YY hh:mm a"));
+        }
+    }
+  }
+
+  pickSuggestion(index) {
+    if (this.availableTimes.length == 0) {
+      this.goBack();
+    }
+    else {
+      this.addingEvent = true;
+      this.selectedSuggestion = this.suggestions[index];
+    }
   }
 
   saveSuggestion() {
@@ -95,40 +133,6 @@ export class AssistantPage {
       this.plannedEvents[inputDate] = inputHolder;
     }
     this.navCtrl.pop();
-  }
-
-  // Give suggestions based on available times.
-  giveSuggestion() {
-    this.findAvailableTimes();
-    var plannedHours = moment(this.planning.duration).hours() + 1;
-    if (plannedHours == 24) {
-      plannedHours = 0;
-    }
-    var plannedMinutes = moment(this.planning.duration).minutes();
-    switch (this.availableTimes.length) {
-      // No available times.
-      case 0:
-        this.suggestionComment = "There are no available times in given slot.";
-        this.suggestions.push("Return to home.");
-        return;
-      default:
-        for (var i = 0; i < this.availableTimes.length; i++) {
-          var eventStart = moment((this.availableTimes[i].split("split_here"))[0]);
-          var eventEnd = moment((this.availableTimes[i].split("split_here"))[0]);
-          eventEnd = eventEnd.add({hours: plannedHours, minutes: plannedMinutes});
-          this.suggestions.push(eventStart.format("MMMM DD YY hh:mm a") + " - " + eventEnd.format("MMMM DD YY hh:mm a"));
-        }
-    }
-  }
-
-  pickSuggestion(index) {
-    if (this.availableTimes.length == 0) {
-      this.goBack();
-    }
-    else {
-      this.addingEvent = true;
-      this.selectedSuggestion = this.suggestions[index];
-    }
   }
 
   showEventTag() {
@@ -167,15 +171,13 @@ export class AssistantPage {
     // Tail of range for avaible start time.
     var upperBound = moment(this.planning.upperBound);
     upperBound.subtract(upperBound.seconds(), "s");
-    // Pulling the planned duration of the event from the given user input.
-    var plannedHours = moment(this.planning.duration).hours() + 1;
-    // Handle weird return value when input for hours is 00.
-    if (plannedHours == 24) {
-      plannedHours = 0;
+    // If there are no busy times you are free to plan within given range.
+    if (this.busyTimes.length == 0) {
+      this.availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+      return;
     }
-    var plannedMinutes = moment(this.planning.duration).minutes();
-    // Data vaildation checks.
-    if ((plannedHours == 0) && (plannedMinutes == 0)) {
+    // Data vaildation checking.
+    if ((this.plannedHours == 0) && (this.plannedMinutes == 0)) {
       alert("Duration cannot be set to 0hrs 0mins.");
       this.goBack();
     }
@@ -187,18 +189,13 @@ export class AssistantPage {
       alert("Upper bound cannot equal lower bound.");
       this.goBack();
     }
-    else if ((moment(lowerBound).add({hours: plannedHours, minutes: plannedMinutes})).isAfter(upperBound)) {
+    else if ((moment(lowerBound).add({hours: this.plannedHours, minutes: this.plannedMinutes})).isAfter(upperBound)) {
       alert("Duration between values is to large.");
       this.goBack();
     }
-    // If there are no busy times you are free to plan within given range.
-    else if (this.busyTimes.length == 0) {
-      this.availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
-      return;
-    }
     else {
       // Find available times driver.
-      var availableTimes = this.recurseDays(this.busyTimes, lowerBound, upperBound, plannedHours, plannedMinutes, 0);
+      var availableTimes = this.recurseDays(this.busyTimes, lowerBound, upperBound, this.plannedHours, this.plannedMinutes, 0);
       this.availableTimes = availableTimes;
     }
   }
@@ -206,91 +203,69 @@ export class AssistantPage {
   recurseDays(busyTimes, lowerBound, upperBound, plannedHours, plannedMinutes, index) {
     var availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
     // Holding values of allocated times for dates.
-    var eventSplit;
     var eventStart;
     var eventEnd;
-    var availableHours;
-    var availableMinutes;
     // Loop through all busy times to find an unoccupied slot.
     for (index; index < busyTimes.length; index++) {
-      eventSplit = this.busyTimes[index].split("split_here");
-      eventStart = moment(eventSplit[0]);
+      eventStart = moment(this.busyTimes[index].split("split_here")[0]);
       eventStart.subtract(eventStart.seconds(), "s");
-      eventEnd = moment(eventSplit[1]);
+      eventEnd = moment(this.busyTimes[index].split("split_here")[1]);
       eventEnd.subtract(eventEnd.seconds(), "s");
       // Event starts before range head.
       if (eventStart.isBefore(lowerBound)) {
         // Event ends before range start.
         if (eventEnd.isBefore(lowerBound)) {
-          availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+          console.log("case 1");
           continue;
         }
         // Event ends between given range.
         if (eventEnd.isBefore(upperBound)) {
-          availableHours = upperBound.diff(eventEnd, "h");
-          availableMinutes = upperBound.diff(eventEnd, "m");
-          // Calculate free time from event end until upper bound.
-          // If there is not enough time event cannot be planned in that slot.
-          if (plannedHours > availableHours) {
+          if ((moment(eventEnd).add({hours: this.plannedHours, minutes: this.plannedMinutes})).isAfter(upperBound)) {
+            console.log("case 2a");
             return new Array;
-          }
-          if (plannedHours == availableHours) {
-            if (plannedMinutes > availableMinutes) {
-              return new Array;
-            }
-            lowerBound = eventEnd;
-            availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
-            continue;
           }
           lowerBound = eventEnd;
           availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+          console.log("case 2b");
           continue;
         }
-        // There is an event during this time.
+        // There is an event during selected time.
+        console.log("case 3");
         return new Array;
       }
       else {
         // Event happens after given range.
         if (eventStart.isAfter(upperBound)) {
-          availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
-          return  availableTimes;
+          console.log("case 4");
+          return availableTimes;
         }
         // Event starts between the range and ends after.
         if (eventEnd.isAfter(upperBound)) {
-            availableHours = eventStart.diff(lowerBound, "h");
-            availableMinutes = eventStart.diff(lowerBound, "m");
-            if (plannedHours > availableHours) {
-              return new Array;
-            }
-            if (plannedHours == availableHours) {
-              if (plannedMinutes > availableMinutes) {
-                return new Array;
-              }
-              upperBound = eventStart;
-              availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
-              continue;
-            }
-            // plannedhours < availableHours.
-            upperBound = eventStart;
-            availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
-            continue;
+          if ((moment(lowerBound).add({hours: this.plannedHours, minutes: this.plannedMinutes})).isAfter(eventStart)) {
+            console.log("case 5a");
+            return new Array;
+          }
+          upperBound = eventStart;
+          availableTimes = [lowerBound.format() + "split_here" + upperBound.format()];
+          console.log("case 5b");
+          continue;
         }
+        console.log("case 6");
         // Event is in between given range.
-        var split_1 = [];
-        var split_2 = [];
-        // Sanity checks for split ranges.
-        if ((plannedHours < eventStart.diff(lowerBound, "h")) ||
-          ((plannedHours == eventStart.diff(lowerBound, "h")) && (plannedMinutes <= eventStart.diff(lowerBound, "m")))) {
-          split_1 = this.recurseDays(busyTimes, lowerBound, eventStart, plannedHours, plannedMinutes, index + 1);
+        var branch_lower = [];
+        var branch_upper = [];
+        // Sanity checks for branch ranges.
+        if (!((moment(lowerBound).add({hours: this.plannedHours, minutes: this.plannedMinutes})).isAfter(eventStart))) {
+          branch_lower = this.recurseDays(busyTimes, lowerBound, eventStart, this.plannedHours, this.plannedMinutes, index + 1);
         }
-        if ((plannedHours < upperBound.diff(eventEnd, "h")) ||
-          ((plannedHours == upperBound.diff(eventEnd, "h")) && (plannedMinutes <= upperBound.diff(eventEnd, "m")))) {
-          split_2 = this.recurseDays(busyTimes, eventEnd, upperBound, plannedHours, plannedMinutes, index + 1);
+        if (!((moment(eventEnd).add({hours: this.plannedHours, minutes: this.plannedMinutes})).isAfter(upperBound))) {
+          branch_upper = this.recurseDays(busyTimes, eventEnd, upperBound, this.plannedHours, this.plannedMinutes, index + 1);
         }
-        availableTimes = split_1.concat(split_2);
+        availableTimes = branch_lower.concat(branch_upper);
         availableTimes.sort();
       }
     }
+    console.log("case 7");
     return availableTimes;
   }
 
